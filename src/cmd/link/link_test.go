@@ -184,9 +184,9 @@ func TestIssue33979(t *testing.T) {
 		runtime.GOOS == "windows" && runtime.GOARCH == "arm64" {
 		t.Skipf("Skipping on %s/%s", runtime.GOOS, runtime.GOARCH)
 	}
-	if runtime.GOOS == "freebsd" && runtime.GOARCH == "riscv64" {
-		t.Skipf("Skipping on %s/%s", runtime.GOOS, runtime.GOARCH)
-	}
+//	if runtime.GOOS == "freebsd" && runtime.GOARCH == "riscv64" {
+//		t.Skipf("Skipping on %s/%s", runtime.GOOS, runtime.GOARCH)
+//	}
 
 	t.Parallel()
 
