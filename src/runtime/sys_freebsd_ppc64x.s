@@ -190,12 +190,23 @@ TEXT runtime·usleep(SB),NOSPLIT,$24-4
 	SYSCALL	$SYS_nanosleep
 	RET
 
+//// func thr_self() thread
+//TEXT runtime·thr_self(SB),NOSPLIT,$0-8
+//       // thr_self(&0(FP))
+//       MOVD    ret+0(FP), R3   // arg 1
+//       SYSCALL $SYS_thr_self
+//       RET
+
 // func thr_self() thread
-TEXT runtime·thr_self(SB),NOSPLIT,$0-8
+TEXT runtime·thr_self(SB),NOSPLIT,$8-8
+       MOVD    $ptr-8(SP), R3  // arg 1 &8(SP)
        // thr_self(&0(FP))
-       MOVD    ret+0(FP), R3   // arg 1
+//     MOVD    ret+0(FP), R3   // arg 1
        SYSCALL $SYS_thr_self
+       MOVD    ptr-8(SP), R3
+       MOVD    R3, ret+0(FP)
        RET
+
 
 // func thr_kill(t thread, sig int)
 TEXT runtime·thr_kill(SB),NOSPLIT,$0-16

@@ -40,9 +40,9 @@ echo
 echo "#### Cleaning $targ"
 chmod -R +w .
 rm -f .gitignore
-if [ -e .git ]; then
-	git clean -f -d
-fi
+#if [ -e .git ]; then
+#	git clean -f -d
+#fi
 echo
 echo "#### Building $targ"
 echo
