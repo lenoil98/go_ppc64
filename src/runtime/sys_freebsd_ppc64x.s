@@ -76,16 +76,8 @@ TEXT runtime·thr_new(SB),NOSPLIT,$0
 	MOVW	R3, ret+16(FP)
 	RET
 
-#ifdef GOARCH_ppc64le
-// ppc64le doesn't need function descriptors
+// ppc64 ELFv2 doesn't need function descriptors
 TEXT runtime·thr_start(SB),NOSPLIT,$0
-#else
-TEXT runtime·thr_start(SB),NOSPLIT|NOFRAME,$0
-	DWORD	$thr_start<>(SB)
-	DWORD	$0
-	DWORD	$0
-TEXT thr_start<>(SB),NOSPLIT,$0
-#endif
 	// initialize essential registers (just in case)
 	BL	runtime·reginit(SB)
 	// set up g
@@ -277,19 +269,10 @@ TEXT runtime·sigfwd(SB),NOSPLIT,$0-32
 	RET
 
 // func sigtramp()
-#ifdef GOARCH_ppc64le
-// ppc64le doesn't need function descriptors
+// ppc64 ELFv2 doesn't need function descriptors
 // Save callee-save registers in the case of signal forwarding.
 // Same as on ARM64 https://golang.org/issue/31827 .
 TEXT runtime·sigtramp(SB),NOSPLIT|NOFRAME,$0
-#else
-// function descriptor for the real sigtramp
-TEXT runtime·sigtramp(SB),NOSPLIT|NOFRAME,$0
-	DWORD	$sigtramp<>(SB)
-	DWORD	$0
-	DWORD	$0
-TEXT sigtramp<>(SB),NOSPLIT|NOFRAME|TOPFRAME,$0
-#endif
 	// Start with standard C stack frame layout and linkage.
 	MOVD    LR, R0
 	MOVD    R0, 16(R1) // Save LR in caller's frame.
