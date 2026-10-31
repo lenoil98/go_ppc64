@@ -99,7 +99,7 @@ func archinit(ctxt *ld.Link) {
 			*ld.FlagTextAddr = ld.Rnd(4096, *ld.FlagRound) + int64(ld.HEADR)
 		}
 
-	case objabi.Hlinux, /* ppc64 elf */
+	case objabi.Hlinux, objabi.Hfreebsd, /* ppc64 elf */
 		objabi.Hopenbsd:
 		ld.Elfinit(ctxt)
 		ld.HEADR = ld.ELFRESERVE

@@ -136,6 +136,12 @@ func main() {
 			if strings.Contains(run("", CheckExit, "uname", "-p"), "riscv64") {
 				gohostarch = "riscv64"
 			}
+			switch p := run("", CheckExit, "uname", "-p"); {
+			case strings.Contains(p, "powerpc64le"):
+				gohostarch = "ppc64le"
+			case strings.Contains(p, "powerpc64"):
+				gohostarch = "ppc64"
+			}
 		case gohostos == "openbsd" && strings.Contains(out, "powerpc64"):
 			gohostarch = "ppc64"
 		default:

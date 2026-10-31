@@ -358,7 +358,13 @@ func doSigPreempt(gp *g, ctxt *sigctxt) {
 	}
 }
 
-const preemptMSupported = true
+// preemptMSupported is false on freebsd/ppc64x. On FreeBSD/powerpc64 a
+// vector store that page-faults can lose its data (16 zero bytes at the
+// start of the page) when a signal is delivered and the handler itself does
+// vector work and takes page faults, as Go's handler does. Asynchronous
+// preemption signals make that frequent enough to corrupt heap data
+// (encoding/gob TestLargeSlice). Re-enable once the kernel is fixed.
+const preemptMSupported = !(GOOS == "freebsd" && (GOARCH == "ppc64" || GOARCH == "ppc64le"))
 
 // preemptM sends a preemption request to the M running gp. This request may
 // be handled asynchronously and may be coalesced with other requests to
